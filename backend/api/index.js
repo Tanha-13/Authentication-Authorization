@@ -2,6 +2,7 @@
 
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 // environment variable setup
 const dotenv = require("dotenv");
@@ -22,6 +23,10 @@ mongoose
   // using api
   const userRoutes = require('./routes/user.route');
   app.use("/api/user", userRoutes);
+
+  // creating auth routes
+  const authRoutes = require('./routes/auth.route');
+  app.use('/api/auth', authRoutes);
 
 
 
