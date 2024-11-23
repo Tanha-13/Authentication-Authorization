@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({});
   const [error,setError] = useState(false);
   const [loading,setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -13,6 +14,7 @@ function Register() {
     e.preventDefault();
     try{
       setLoading(true);
+      setError(false);
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
@@ -21,18 +23,18 @@ function Register() {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data);
       setLoading(false);
       if(data.success === false){
         setError(true);
         console.log(error);
         return;
       }
+      navigate("/login");
     }
     catch(err){
+      console.log(err);
       setLoading(false);
       setError(true);
-      console.log(error);
     }
   }
   return (
